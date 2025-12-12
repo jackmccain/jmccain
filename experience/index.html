@@ -79,6 +79,7 @@
         }
 
         .profile-image-container {
+            user-select: none;
             width: 70px;
             height: 70px;
             position: relative;
@@ -148,6 +149,7 @@
             font-size: 1.75rem;
             font-weight: 400;
             margin-bottom: 0.25rem;
+            user-select: none;
             color: #e4e4e4;
         }
 
@@ -160,6 +162,7 @@
             font-size: 1.1rem;
             color: #999;
             margin: 0;
+            user-select: none;
         }
 
         body.light-mode .profile-text .subtitle {
@@ -173,6 +176,7 @@
             text-decoration: none;
             font-size: 1rem;
             transition: color 0.2s ease;
+            user-select: none;
         }
 
         .menu-link:hover,
@@ -571,6 +575,11 @@
         // Set button icon based on current theme
         if (body.classList.contains('light-mode')) {
             themeToggle.innerHTML = '☀';
+        }
+        
+        // Initialize localStorage if not set
+        if (!localStorage.getItem('theme')) {
+            localStorage.setItem('theme', 'dark');
         }
 
 

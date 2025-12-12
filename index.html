@@ -80,6 +80,7 @@
         }
 
         .profile-image-container {
+            user-select: none;
             width: 70px;
             height: 70px;
             position: relative;
@@ -150,6 +151,7 @@
             font-size: 1.75rem;
             font-weight: 400;
             margin-bottom: 0.25rem;
+            user-select: none;
             color: #e4e4e4;
         }
 
@@ -162,6 +164,7 @@
             font-size: 1.1rem;
             color: #999;
             margin: 0;
+            user-select: none;
         }
 
         body.light-mode .profile-text .subtitle {
@@ -176,6 +179,7 @@
             text-decoration: none;
             font-size: 1rem;
             transition: color 0.2s ease;
+            user-select: none;
         }
 
         .menu-link:hover,
@@ -634,10 +638,15 @@
 <body>
     <script>
         // Apply saved theme immediately to prevent flash
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-        }
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            } else if (savedTheme === 'dark') {
+                document.body.classList.remove('light-mode');
+            }
+            // If no saved theme, default to dark mode (do nothing)
+        })();
     </script>
     <button class="theme-toggle" id="themeToggle">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -719,6 +728,11 @@
         // Set button icon based on current theme
         if (body.classList.contains('light-mode')) {
             themeToggle.innerHTML = '☀';
+        }
+        
+        // Initialize localStorage if not set
+        if (!localStorage.getItem('theme')) {
+            localStorage.setItem('theme', 'dark');
         }
 
         themeToggle.addEventListener('click', () => {
