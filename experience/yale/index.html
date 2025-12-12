@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yale University | Jack McCain</title>
+    <link rel="icon" type="image/jpeg" href="../../profile.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: #212121;
+            color: #e4e4e4;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background-color: #F9F5EE;
+            color: #2a2d32;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #e4e4e4;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+
+        body.light-mode .theme-toggle {
+            color: #2a2d32;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem 2rem;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 0;
+            animation: none;
+        }
+
+        .content-layout {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            margin-top: 2.5rem;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            width: 70px;
+            text-align: right;
+            animation: none;
+        }
+
+        .profile-image-container {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 1rem;
+            margin-left: 0.5rem;
+            animation: tiltIn 0.8s ease-in-out;
+        }
+
+        .profile-image-container:hover {
+            transform: rotate(3deg);
+        }
+
+        .profile-image,
+        .profile-image-hover {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        @keyframes tiltIn {
+            from {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        .profile-image-hover {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image-hover {
+            opacity: 1;
+        }
+
+        .profile-text {
+            padding-left: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-text h1 {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+            color: #e4e4e4;
+        }
+
+        body.light-mode .profile-text h1 {
+            color: #2a2d32;
+        }
+
+        .profile-text .subtitle {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            color: #999;
+            margin: 0;
+        }
+
+        body.light-mode .profile-text .subtitle {
+            color: #666;
+        }
+
+        .menu-link {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            color: #999;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            color: #FF6B4A;
+        }
+
+        body.light-mode .menu-link {
+            color: #666;
+        }
+
+        body.light-mode .menu-link:hover,
+        body.light-mode .menu-link.active {
+            color: #FF6B4A;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 2rem;
+            padding-top: 2rem;
+            padding-right: 0;
+            padding-bottom: 3rem;
+            min-height: 80vh;
+            position: relative;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        body.light-mode .main-content {
+            border-left: 1px solid rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        main {
+            padding: 0;
+        }
+
+        .project-detail {
+            max-width: 100%;
+            margin: 0;
+            padding-right: 0;
+        }
+
+        .project-header {
+            margin-top: -0.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-mode .project-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .project-title-row {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+            width: 100%;
+        }
+
+        .project-title {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e4e4e4;
+            margin: 0;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .project-title:hover {
+            color: #FF6B4A;
+        }
+
+        body.light-mode .project-title {
+            color: #2a2d32;
+        }
+
+        body.light-mode .project-title:hover {
+            color: #FF6B4A;
+        }
+
+        .project-dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            height: 1px;
+            margin: 0 1rem;
+        }
+
+        body.light-mode .project-dotted-line {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        }
+
+        .project-date {
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-right: -0.1rem;
+        }
+
+        body.light-mode .project-date {
+            color: #999;
+        }
+
+        .project-description {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0;
+        }
+
+        .project-content {
+            margin-top: 2rem;
+            padding-right: 0;
+            max-width: 100%;
+        }
+
+        .project-content p {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #CCCCCC;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            padding-right: 3rem;
+        }
+
+        body.light-mode .project-content p {
+            color: #222222;
+        }
+
+        .project-list {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #CCCCCC;
+            line-height: 1.6;
+            margin: 0 0 1rem 0;
+            padding-left: 1.5rem;
+            padding-right: 3rem;
+            list-style-type: disc;
+        }
+
+        body.light-mode .project-list {
+            color: #222222;
+        }
+
+        .project-list li {
+            margin-bottom: 0.75rem;
+        }
+
+        .project-list a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid #666;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-mode .project-list a {
+            border-bottom-color: #aaa;
+        }
+
+        .project-list a:hover {
+            border-bottom-color: #999;
+        }
+
+        body.light-mode .project-list a:hover {
+            border-bottom-color: #666;
+        }
+
+        .project-content a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid #666;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-mode .project-content a {
+            border-bottom-color: #aaa;
+        }
+
+        .project-content a:hover {
+            border-bottom-color: #999;
+        }
+
+        body.light-mode .project-content a:hover {
+            border-bottom-color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 6rem 1.5rem 2rem 1.5rem;
+            }
+
+            .content-layout {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 2rem;
+            }
+
+            .profile-text {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .left-section {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .main-content {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .profile-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-text .subtitle {
+                font-size: 1rem;
+            }
+
+            .project-title-row {
+                flex-wrap: wrap;
+            }
+
+            .project-dotted-line {
+                display: none;
+            }
+
+            .project-detail {
+                max-width: 100%;
+                padding-right: 0;
+            }
+
+            .project-date {
+                width: 100%;
+                margin-top: 0.25rem;
+
+            .project-content p {
+                padding-right: 0.5rem;
+            }
+
+            .project-list {
+                padding-right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        const savedTheme = localStorage.getItem(\'theme\');
+        if (savedTheme === \'light\') {
+            document.body.classList.add(\'light-mode\');
+        }
+    </script>
+    <button class="theme-toggle" id="themeToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <div class="page-wrapper">
+        <div class="profile-header">
+            <a href="../../" class="profile-image-container">
+                <img src="../../profile.jpg" alt="Jack McCain" class="profile-image">
+                <img src="../../hover-profile.png" alt="Jack McCain" class="profile-image-hover">
+            </a>
+            <div class="profile-text">
+                <a href="../../" style="text-decoration: none;">
+                    <h1>Jack McCain</h1>
+                </a>
+                <p class="subtitle">New York & New Haven</p>
+            </div>
+        </div>
+
+        <div class="content-layout">
+            <div class="left-section">
+                <a href="../../portfolio/" class="menu-link">Portfolio</a>
+                <a href="../" class="menu-link active">Experience</a>
+                <a href="../../film/" class="menu-link">Film</a>
+            </div>
+            <div class="main-content">
+                <main>
+                    <div class="project-detail">
+                        <div class="project-header">
+                            <div class="project-title-row">
+                                <a href="https://yale.edu" target="_blank" style="text-decoration: none;">
+                                    <h1 class="project-title">Yale University</h1>
+                                </a>
+                                <div class="project-dotted-line"></div>
+                                <div class="project-date">CURRENT</div>
+                            </div>
+                            <p class="project-description">Studying Computer Science & Psychology.</p>
+                        </div>
+
+                        <div class="project-content">
+                            <p>I'm currently a junior at <a href="https://yale.edu" target="_blank">Yale University</a>, pursuing a degree in Computer Science and Psychology. I expect to graduate in May of 2027.</p>
+
+                            <ul class="project-list">
+                                <li>I compete on the <a href="https://yalebulldogs.com/sports/triathlon" target="_blank">Yale Triathlon Team</a>.</li>
+                                <li>I support global disaster response through my work at the <a href="https://ysph.yale.edu/" target="_blank">Yale School of Public Health</a>, building a <a href="portfolio/CDRP/" target="_blank">system</a> to predict the weather and optimize disaster response worldwide. </li>
+                                <li>I explore computational neuroscience at the <a href="https://wti.yale.edu/" target="_blank">Wu Tsai Neuroscience Institute</a>, investigating novel applications of <a href="https://arxiv.org/abs/2403.11207" target="_blank">MindEye2</a>, a software that can reconstruct images in your brain.</li>
+                            </ul>
+
+                            <p>I am a member of the <a href="https://buddhistlife.yale.edu/student-community" target="_blank">Buddhist Student Community</a>.</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Set button icon based on current theme
+        if (body.classList.contains('light-mode')) {
+            themeToggle.innerHTML = '☀';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '☀';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

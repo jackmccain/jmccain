@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Jack McCain</title>
+    <link rel="icon" type="image/jpeg" href="profile.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: #212121;
+            color: #e4e4e4;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background-color: #F9F5EE;
+            color: #2a2d32;
+        }
+
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #e4e4e4;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+
+        body.light-mode .theme-toggle {
+            color: #2a2d32;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem 2rem;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 0;
+            animation: none;
+        }
+
+        .content-layout {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            margin-top: 2.5rem;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            width: 70px;
+            text-align: right;
+            animation: none;
+        }
+
+        .profile-image-container {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 1rem;
+            margin-left: 0.5rem;
+            animation: tiltIn 0.8s ease-in-out;
+        }
+
+        .profile-image-container:hover {
+            transform: rotate(3deg);
+        }
+
+        .profile-image,
+        .profile-image-hover {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        @keyframes tiltIn {
+            from {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        .profile-image-hover {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image-hover {
+            opacity: 1;
+        }
+
+        .profile-text {
+            padding-left: 1rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-text h1 {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+            color: #e4e4e4;
+        }
+
+        body.light-mode .profile-text h1 {
+            color: #2a2d32;
+        }
+
+        .profile-text .subtitle {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            color: #999;
+            margin: 0;
+        }
+
+        body.light-mode .profile-text .subtitle {
+            color: #666;
+        }
+
+
+        .menu-link {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            color: #999;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            color: #FF6B4A;
+        }
+
+        body.light-mode .menu-link {
+            color: #666;
+        }
+
+        body.light-mode .menu-link:hover,
+        body.light-mode .menu-link.active {
+            color: #2a2d32;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 2rem;
+            padding-top: 2rem;
+            padding-right: 3rem;
+            padding-bottom: 3rem;
+            min-height: 80vh;
+            position: relative;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        body.light-mode .main-content {
+            border-left: 1px solid rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* Main Content */
+        main {
+            padding: 0;
+        }
+
+        .featured-post {
+            max-width: 650px;
+            margin: 0;
+        }
+
+
+        .featured-post .bio {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.2rem;
+            color: #b4b4b4;
+            margin-top: -0.5rem;
+            margin-bottom: 0;
+            line-height: 1.6;
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        body.light-mode .featured-post .bio {
+            color: #000;
+        }
+
+        .currently-header {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #e4e4e4;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        body.light-mode .currently-header {
+            color: #2a2d32;
+        }
+
+        .currently-list {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 0.875rem;
+            color: #CCCCCC;
+            line-height: 1.6;
+            margin: 0;
+            padding-left: 1.5rem;
+            list-style-type: disc;
+        }
+
+        body.light-mode .currently-list {
+            color: #222222;
+        }
+
+        .currently-list li {
+            margin-bottom: 0.75rem;
+        }
+
+        .currently-list a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid #666;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-mode .currently-list a {
+            border-bottom-color: #aaa;
+        }
+
+        .currently-list a:hover {
+            border-bottom-color: #999;
+        }
+
+        body.light-mode .currently-list a:hover {
+            border-bottom-color: #666;
+        }
+
+        .currently-text {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #CCCCCC;
+            line-height: 1.6;
+            margin: 0;
+            text-align: justify;
+        }
+
+        body.light-mode .currently-text {
+            color: #222222;
+        }
+
+        .currently-text a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid #666;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-mode .currently-text a {
+            border-bottom-color: #aaa;
+        }
+
+        .currently-text a:hover {
+            border-bottom-color: #999;
+        }
+
+        body.light-mode .currently-text a:hover {
+            border-bottom-color: #666;
+        }
+
+        .previously-header {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #e4e4e4;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.light-mode .previously-header {
+            color: #2a2d32;
+        }
+
+        .previously-text {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #CCCCCC;
+            line-height: 1.6;
+            margin: 0;
+            text-align: justify;
+        }
+
+        body.light-mode .previously-text {
+            color: #222222;
+        }
+
+        .previously-text a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid #666;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-mode .previously-text a {
+            border-bottom-color: #aaa;
+        }
+
+        .previously-text a:hover {
+            border-bottom-color: #999;
+        }
+
+        body.light-mode .previously-text a:hover {
+            border-bottom-color: #666;
+        }
+
+        .featured-post p {
+            font-size: 0.9rem;
+            color: #c4c4c4;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        body.light-mode .featured-post p {
+            color: #4a4a4a;
+        }
+
+        .continue-reading {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #e4e4e4;
+            text-decoration: none;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: opacity 0.2s ease;
+        }
+
+        body.light-mode .continue-reading {
+            color: #2a2d32;
+        }
+
+        .continue-reading:hover {
+            opacity: 0.7;
+        }
+
+        .continue-reading::after {
+            content: '→';
+            font-size: 1rem;
+        }
+
+        /* Post List */
+        .post-list {
+            max-width: 650px;
+            margin: 0;
+        }
+
+        .post-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-item .post-content {
+            display: flex;
+            align-items: baseline;
+            flex: 1;
+            gap: 1rem;
+        }
+
+        .post-item .post-dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            height: 1px;
+            margin: 0 8rem 0 1rem;
+        }
+
+        body.light-mode .post-item .post-dotted-line {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode .post-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .post-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .post-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #ff6b4a;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .post-item:not(.has-indicator) .post-indicator {
+            display: none;
+        }
+
+        .post-title {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e4e4e4;
+            margin: 0;
+        }
+
+        body.light-mode .post-title {
+            color: #2a2d32;
+        }
+
+        .post-description {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0;
+            margin-left: 1.5rem;
+        }
+
+        .post-item:not(.has-indicator) .post-description {
+            margin-left: 0;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            margin-left: 2rem;
+        }
+
+        body.light-mode .post-date {
+            color: #999;
+        }
+
+        /* Dotted line post widget style */
+        .post-item-dotted {
+            display: block;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-item-dotted:first-child {
+            padding-top: 0;
+        }
+
+        body.light-mode .post-item-dotted {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .post-item-dotted .post-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+            width: 100%;
+        }
+
+        .post-item-dotted .post-title {
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .post-item-dotted .dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            height: 1px;
+            margin: 0 8rem 0 1rem;
+        }
+
+        body.light-mode .post-item-dotted .dotted-line {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        }
+
+        .post-item-dotted .post-date {
+            flex-shrink: 0;
+            margin-left: 0;
+        }
+
+        .post-item-dotted .post-description {
+            margin-left: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 6rem 1.5rem 2rem 1.5rem;
+            }
+
+
+            .content-layout {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 2rem;
+            }
+
+            .profile-text {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .content-layout {
+                flex-direction: column;
+            }
+
+            .left-section {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .menu-link {
+                text-align: left;
+            }
+
+            .main-content {
+                border-left: none !important;
+                border-top: none !important;
+                padding-left: 0;
+            }
+
+            .profile-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-text .subtitle {
+                font-size: 1rem;
+            }
+
+            .post-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .post-date {
+                margin-left: 1.5rem;
+                margin-top: 0.25rem;
+            }
+
+            .post-item:not(.has-indicator) .post-date {
+                margin-left: 0;
+            }
+
+            .post-item-dotted .post-header {
+                flex-wrap: wrap;
+            }
+
+            .post-item-dotted .dotted-line {
+                display: none;
+            }
+
+            .post-item-dotted .post-date {
+                width: 100%;
+                margin-top: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+    <button class="theme-toggle" id="themeToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <div class="page-wrapper">
+        <div class="profile-header">
+            <a href="./" class="profile-image-container">
+                <img src="profile.jpg" alt="Jack McCain" class="profile-image">
+                <img src="hover-profile.png" alt="Jack McCain" class="profile-image-hover">
+            </a>
+            <div class="profile-text">
+                <a href="./" style="text-decoration: none;">
+                    <h1>Jack McCain</h1>
+                </a>
+                <p class="subtitle">New York & New Haven</p>
+            </div>
+        </div>
+
+        <div class="content-layout">
+            <div class="left-section">
+                <a href="portfolio/" class="menu-link">Portfolio</a>
+                <a href="experience/" class="menu-link">Experience</a>
+                <a href="film/" class="menu-link">Film</a>
+            </div>
+            <div class="main-content">
+                <main>
+                    <article class="featured-post" id="about-section">
+                        <p class="bio">I want to update the world, help people grow, and make things.</p>
+                        <h3 class="currently-header">Currently</h3>
+                        <p class="currently-text">I'm a junior studying Computer Science & Psychology at <a href="https://yale.edu" target="_blank">Yale</a>, where I also compete on the Yale Triathlon Team. I support global disaster response through my work at the <a href="https://ysph.yale.edu/" target="_blank">Yale School of Public Health</a>, building a <a href="portfolio/CDRP.html" target="_blank">system</a> to predict the weather and optimize disaster response worldwide. I work part-time for <a href="https://joinhandshake.com/ai" target="_blank">Handshake AI</a>.</p>
+                        <h3 class="previously-header">Previously</h3>
+                        <p class="previously-text">I made movies at <a href="https://nyfa.edu" target="_blank">New York Film Academy</a>, conducted Alzheimer's Research at the <a href="https://medicine.yale.edu/" target="_blank">Yale School of Medicine</a>, and studied marketing and machine learning at the <a href="https://www.ku.dk/en" target="_blank">University of Copenhagen</a> in Denmark. Recently, I used machine learning to understand the human brain at the <a href="https://wti.yale.edu/" target="_blank">Wu Tsai Institute</a>, read <a href="https://bodylang.onrender.com/" target="_blank">Body Language</a>, and even beat <a href="https://polymarket.com/" target="_blank">prediction markets</a>.<br><br>I also built software to help voters better understand their representatives, which won the <a href="https://www.congressionalappchallenge.us/" target="_blank">Congressional App Challenge</a>. I coded tools to help people harness their <a href="https://hopper.studio" target="_blank">creative visions</a>, explore <a href="citta.html" target="_blank">computational neuroscience</a>, and understand the evolving relationship between technology and art.</p>
+                        <h3 class="previously-header">Contact</h3>
+                        <p class="previously-text">You can email me at <a href="mailto:jack.mccain@yale.edu" target="_blank">jack.mccain@yale.edu</a>. I'm also on <a href="https://github.com/jackmccain" target="_blank">GitHub</a>.</p>
+                    </article>
+
+                    <div class="post-list" id="projects-section" style="display: none;">
+                <article class="post-item-dotted">
+                    <div class="post-header">
+                        <h2 class="post-title">Million-Mile Tech</h2>
+                        <div class="dotted-line"></div>
+                        <div class="post-date">OCT 2025</div>
+                    </div>
+                    <p class="post-description">Durability is the ultimate feature.</p>
+                </article>
+
+                <article class="post-item has-indicator">
+                    <div class="post-content">
+                        <div class="post-title-wrapper">
+                            <div class="post-indicator"></div>
+                            <h2 class="post-title">The Hunt</h2>
+                        </div>
+                        <div class="post-dotted-line"></div>
+                    </div>
+                    <div class="post-date">SEP 2025</div>
+                </article>
+
+                <article class="post-item">
+                    <div class="post-content">
+                        <div class="post-title-wrapper">
+                            <div class="post-indicator"></div>
+                            <h2 class="post-title">64 Miles in New York City</h2>
+                        </div>
+                        <div class="post-dotted-line"></div>
+                    </div>
+                    <div class="post-date">SEP 2025</div>
+                    </article>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Set button icon based on current theme
+        if (body.classList.contains('light-mode')) {
+            themeToggle.innerHTML = '☀';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '☀';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+    </script>
+</body>
+</html>
