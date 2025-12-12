@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Films | Jack McCain</title>
+    <link rel="icon" type="image/jpeg" href="../profile.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: #212121;
+            color: #e4e4e4;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background-color: #F9F5EE;
+            color: #2a2d32;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #e4e4e4;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+
+        body.light-mode .theme-toggle {
+            color: #2a2d32;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem 2rem;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 0;
+            animation: none;
+        }
+
+        .content-layout {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            margin-top: 2.5rem;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            width: 70px;
+            text-align: right;
+            animation: none;
+        }
+
+        .profile-image-container {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 1rem;
+            margin-left: 0.5rem;
+            animation: tiltIn 0.8s ease-in-out;
+        }
+
+        .profile-image-container:hover {
+            transform: rotate(3deg);
+        }
+
+        .profile-image,
+        .profile-image-hover {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        @keyframes tiltIn {
+            from {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        .profile-image-hover {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image {
+            opacity: 0;
+        }
+
+        .profile-image-container:hover .profile-image-hover {
+            opacity: 1;
+        }
+
+        .profile-text {
+            padding-left: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-text h1 {
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+            color: #e4e4e4;
+        }
+
+        body.light-mode .profile-text h1 {
+            color: #2a2d32;
+        }
+
+        .profile-text .subtitle {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            color: #999;
+            margin: 0;
+        }
+
+        body.light-mode .profile-text .subtitle {
+            color: #666;
+        }
+
+        .menu-link {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            color: #999;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            color: #FF6B4A;
+        }
+
+        body.light-mode .menu-link {
+            color: #666;
+        }
+
+        body.light-mode .menu-link:hover,
+        body.light-mode .menu-link.active {
+            color: #FF6B4A;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            padding-left: 2rem;
+            padding-top: 2rem;
+            padding-right: 0;
+            padding-bottom: 3rem;
+            min-height: 80vh;
+            position: relative;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        body.light-mode .main-content {
+        }
+
+        main {
+            padding: 0;
+        }
+
+        .post-list {
+            max-width: 100%;
+            margin: 0;
+            padding-right: 0;
+        }
+
+        .post-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-item .post-content {
+            display: flex;
+            align-items: baseline;
+            flex: 1;
+            gap: 1rem;
+        }
+
+        .post-item .post-dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            height: 1px;
+            margin: 0 1rem;
+        }
+
+        body.light-mode .post-item .post-dotted-line {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode .post-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .post-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #ff6b4a;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .post-item:not(.has-indicator) .post-indicator {
+            display: none;
+        }
+
+        .post-title {
+            font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e4e4e4;
+            margin: 0;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .post-title:hover {
+            color: #FF6B4A;
+        }
+
+        body.light-mode .post-title {
+            color: #2a2d32;
+        }
+
+        body.light-mode .post-title:hover {
+            color: #FF6B4A;
+        }
+
+        .post-description {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0;
+            margin-left: 1.5rem;
+        }
+
+        .post-item:not(.has-indicator) .post-description {
+            margin-left: 0;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            margin-left: 2rem;
+            margin-right: -0.1rem;
+        }
+
+        body.light-mode .post-date {
+            color: #999;
+        }
+
+        .post-item-dotted {
+            display: block;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-item-dotted:first-child {
+            padding-top: 0;
+            margin-top: -0.5rem;
+        }
+
+        body.light-mode .post-item-dotted {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .post-item-dotted .post-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+            width: 100%;
+        }
+
+        .post-item-dotted .post-title {
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .post-item-dotted .dotted-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            height: 1px;
+            margin: 0 1rem;
+        }
+
+        body.light-mode .post-item-dotted .dotted-line {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        }
+
+        .post-item-dotted .post-date {
+            flex-shrink: 0;
+            margin-left: 0;
+            margin-right: -0.1rem;
+        }
+
+        .post-item-dotted .post-description {
+            margin-left: 0;
+        }
+
+        /* Animated Lines */
+        .animated-lines-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .horizontal-line,
+        .vertical-line {
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 1;
+            fill: none;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .border-top,
+        .border-left {
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 2;
+            fill: none;
+            vector-effect: non-scaling-stroke;
+        }
+
+        body.light-mode .horizontal-line,
+        body.light-mode .vertical-line,
+        body.light-mode .border-top,
+        body.light-mode .border-left {
+            stroke: rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .horizontal-line {
+            stroke-dasharray: 870;
+            stroke-dashoffset: 870;
+            animation: drawLine 2.2s ease-out 0.5s forwards;
+        }
+
+        .vertical-line {
+            stroke-dasharray: 610;
+            stroke-dashoffset: 610;
+            animation: drawLine 2.6s ease-out 0.5s forwards;
+        }
+
+        .border-top {
+            stroke-dasharray: 900;
+            stroke-dashoffset: 0;
+            animation: retractTop 2.2s ease-out forwards;
+        }
+
+        .border-left {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+            animation: retractLeft 2.2s ease-out forwards;
+        }
+
+        @keyframes retractTop {
+            from {
+                stroke-dashoffset: 0;
+            }
+            to {
+                stroke-dashoffset: 245;
+            }
+        }
+
+        @keyframes retractLeft {
+            from {
+                stroke-dashoffset: 0;
+            }
+            to {
+                stroke-dashoffset: 633;
+            }
+        }
+
+        /* Video Container */
+        .video-container {
+            opacity: 0;
+            animation: fadeInVideo 0.6s ease-in 1.5s forwards;
+            max-width: 100%;
+            padding: 0;
+            margin: -2rem 0 0 -2rem;
+        }
+
+        .film-video {
+            width: 100%;
+            max-width: 656px;
+            height: 367px;
+            display: block;
+            border-radius: 4px;
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        body.light-mode .film-video {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .arrow-btn {
+            position: absolute;
+            bottom: -50px;
+            background: none;
+            border: none;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .arrow-btn.arrow-left {
+            right: 70px;
+        }
+
+        .arrow-btn.arrow-right {
+            right: 35px;
+        }
+
+        .arrow-btn:hover {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+
+        .arrow-btn svg {
+            width: 24px;
+            height: 24px;
+            color: #e4e4e4;
+        }
+
+        body.light-mode .arrow-btn svg {
+            color: #2a2d32;
+        }
+
+        body.light-mode .arrow-btn svg {
+            color: #2a2d32;
+        }
+
+        .play-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .play-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .play-btn svg {
+            color: #e4e4e4;
+            margin-left: 2px;
+        }
+
+        body.light-mode .play-btn {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.light-mode .play-btn:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        body.light-mode .play-btn svg {
+            color: #2a2d32;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 6rem 1.5rem 2rem 1.5rem;
+                max-width: 100%;
+            }
+
+            .content-layout {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .main-content {
+                padding: 2rem 0.5rem;
+                margin-right: 0;
+                border-left: none !important;
+                border-top: none !important;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 2rem;
+            }
+
+            .profile-text {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .left-section {
+                flex-direction: row;
+                gap: 1.5rem;
+            }
+
+            .main-content {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .profile-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-text .subtitle {
+                font-size: 1rem;
+            }
+
+            .animated-lines-container {
+                display: none;
+            }
+
+            .video-container {
+                padding-right: 0;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .film-video {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .post-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .post-date {
+                margin-left: 1.5rem;
+                margin-top: 0.25rem;
+            }
+
+            .post-item:not(.has-indicator) .post-date {
+                margin-left: 0;
+            }
+
+            .post-item-dotted .post-header {
+                flex-wrap: wrap;
+            }
+
+            .post-item-dotted .dotted-line {
+                display: none;
+            }
+
+            .post-item-dotted .post-date {
+                width: 100%;
+                margin-top: 0.25rem;
+            }
+
+            .video-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .film-video {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <div class="page-wrapper">
+        <div class="profile-header">
+            <a href="../" class="profile-image-container">
+                <img src="../profile.jpg" alt="Jack McCain" class="profile-image">
+                <img src="../hover-profile.png" alt="Jack McCain" class="profile-image-hover">
+            </a>
+            <div class="profile-text">
+                <a href="../" style="text-decoration: none;">
+                    <h1>Jack McCain</h1>
+                </a>
+                <p class="subtitle">New York & New Haven</p>
+            </div>
+        </div>
+
+        <div class="content-layout">
+            <div class="left-section">
+                <a href="../portfolio/" class="menu-link">Portfolio</a>
+                <a href="../experience/" class="menu-link">Experience</a>
+                <a href="./" class="menu-link active">Film</a>
+            </div>
+            <div class="main-content">
+                <svg class="animated-lines-container" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" preserveAspectRatio="none">
+                    <!-- Animated drawing lines -->
+                    <line class="horizontal-line" x1="-50" y1="448" x2="820" y2="448" />
+                    <line class="vertical-line" x1="820" y1="-50" x2="820" y2="445" />
+
+                    <!-- Retracting border lines -->
+                    <line class="border-top" x1="0" y1="0" x2="900" y2="0" />
+                    <line class="border-left" x1="0" y1="0" x2="0" y2="1000" />
+                </svg>
+                <main>
+                    <div class="video-container" style="position: relative;">
+                        <iframe id="filmVideo" class="film-video" src="https://player.vimeo.com/video/910118266?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="The 2024 NYC Marathon"></iframe>
+                        <button class="arrow-btn arrow-left" id="prevBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="arrow-btn arrow-right" id="nextBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '☀';
+            } else {
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+            }
+        });
+
+        // Film navigation
+        const videos = [
+            { id: '910118266', title: 'The 2024 NYC Marathon' },
+            { id: '1044802654', title: 'Ultra' },
+            { id: '1145997911', title: '8th Avenue' },
+            { id: '1007175366', title: 'West' },
+            { id: '1146000053', title: 'Cape Breton Island' },
+            { id: '1135696837', title: 'Life' },
+            { id: '708356944', title: 'If I Make This Shot' },
+            { id: '708356761', title: 'But A Moment' },
+            { id: '708356989', title: 'Vote' }
+        ];
+        let currentIndex = 0;
+        const filmVideo = document.getElementById('filmVideo');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateVideo() {
+            filmVideo.src = `https://player.vimeo.com/video/${videos[currentIndex].id}?badge=0&autopause=0&player_id=0&app_id=58479`;
+            filmVideo.title = videos[currentIndex].title;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % videos.length;
+            updateVideo();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+            updateVideo();
+        });
+    </script>
+</body>
+</html>
