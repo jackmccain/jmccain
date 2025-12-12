@@ -639,13 +639,16 @@
     <script>
         // Apply saved theme immediately to prevent flash
         (function() {
-            const savedTheme = localStorage.getItem('theme');
+            let savedTheme = localStorage.getItem('theme');
+            // If no theme is saved, default to dark mode and save it
+            if (!savedTheme) {
+                savedTheme = 'dark';
+                localStorage.setItem('theme', 'dark');
+            }
+            // Apply the theme
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-            } else if (savedTheme === 'dark') {
-                document.body.classList.remove('light-mode');
             }
-            // If no saved theme, default to dark mode (do nothing)
         })();
     </script>
     <button class="theme-toggle" id="themeToggle">
@@ -729,12 +732,6 @@
         if (body.classList.contains('light-mode')) {
             themeToggle.innerHTML = '☀';
         }
-        
-        // Initialize localStorage if not set
-        if (!localStorage.getItem('theme')) {
-            localStorage.setItem('theme', 'dark');
-        }
-
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('light-mode');
 

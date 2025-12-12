@@ -444,10 +444,18 @@
 <body>
     <script>
         // Apply saved theme immediately to prevent flash
-        const savedTheme = localStorage.getItem(\'theme\');
-        if (savedTheme === \'light\') {
-            document.body.classList.add(\'light-mode\');
-        }
+        (function() {
+            let savedTheme = localStorage.getItem('theme');
+            // If no theme is saved, default to dark mode and save it
+            if (!savedTheme) {
+                savedTheme = 'dark';
+                localStorage.setItem('theme', 'dark');
+            }
+            // Apply the theme
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        })();
     </script>
     <button class="theme-toggle" id="themeToggle">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -512,12 +520,6 @@
         if (body.classList.contains('light-mode')) {
             themeToggle.innerHTML = '☀';
         }
-        
-        // Initialize localStorage if not set
-        if (!localStorage.getItem('theme')) {
-            localStorage.setItem('theme', 'dark');
-        }
-
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('light-mode');
 
