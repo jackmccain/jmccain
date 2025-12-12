@@ -373,14 +373,6 @@
             z-index: 1;
         }
 
-        .horizontal-line,
-        .vertical-line {
-            stroke: rgba(255, 255, 255, 0.2);
-            stroke-width: 1;
-            fill: none;
-            vector-effect: non-scaling-stroke;
-        }
-
         .border-top,
         .border-left {
             stroke: rgba(255, 255, 255, 0.2);
@@ -389,29 +381,9 @@
             vector-effect: non-scaling-stroke;
         }
 
-        body.light-mode .horizontal-line,
-        body.light-mode .vertical-line,
         body.light-mode .border-top,
         body.light-mode .border-left {
             stroke: rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes drawLine {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        .horizontal-line {
-            stroke-dasharray: 870;
-            stroke-dashoffset: 870;
-            animation: drawLine 2.2s ease-out 0.5s forwards;
-        }
-
-        .vertical-line {
-            stroke-dasharray: 610;
-            stroke-dashoffset: 610;
-            animation: drawLine 2.6s ease-out 0.5s forwards;
         }
 
         .border-top {
@@ -713,10 +685,6 @@
             </div>
             <div class="main-content">
                 <svg class="animated-lines-container" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" preserveAspectRatio="none">
-                    <!-- Animated drawing lines -->
-                    <line class="horizontal-line" x1="-50" y1="448" x2="820" y2="448" />
-                    <line class="vertical-line" x1="820" y1="-50" x2="820" y2="445" />
-
                     <!-- Retracting border lines -->
                     <line class="border-top" x1="0" y1="0" x2="900" y2="0" />
                     <line class="border-left" x1="0" y1="0" x2="0" y2="1000" />
