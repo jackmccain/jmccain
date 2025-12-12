@@ -464,6 +464,7 @@
         }
 
         body.light-mode .film-video {
+            background-color: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
@@ -592,8 +593,13 @@
             }
 
             .left-section {
-                flex-direction: row;
-                gap: 1.5rem;
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .menu-link {
+                text-align: left;
             }
 
             .main-content {
@@ -614,14 +620,33 @@
             }
 
             .video-container {
-                padding-right: 0;
+                padding: 0;
+                margin: 0;
                 max-width: 100%;
                 width: 100%;
+                opacity: 1 !important;
+                animation: none !important;
             }
 
             .film-video {
                 max-width: 100%;
                 width: 100%;
+            }
+
+            .arrow-btn {
+                bottom: -60px;
+            }
+
+            .arrow-btn.arrow-left {
+                right: auto;
+                left: 50%;
+                transform: translateX(-45px);
+            }
+
+            .arrow-btn.arrow-right {
+                right: auto;
+                left: 50%;
+                transform: translateX(10px);
             }
 
             .post-item {
@@ -651,17 +676,17 @@
                 margin-top: 0.25rem;
             }
 
-            .video-container {
-                padding: 1.5rem 1rem;
-            }
-
-            .film-video {
-                max-width: 100%;
-            }
         }
     </style>
 </head>
 <body>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        const savedTheme = localStorage.getItem(\'theme\');
+        if (savedTheme === \'light\') {
+            document.body.classList.add(\'light-mode\');
+        }
+    </script>
     <button class="theme-toggle" id="themeToggle">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
@@ -719,13 +744,21 @@
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
 
+        // Set button icon based on current theme
+        if (body.classList.contains('light-mode')) {
+            themeToggle.innerHTML = '☀';
+        }
+
+
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('light-mode');
 
             if (body.classList.contains('light-mode')) {
                 themeToggle.innerHTML = '☀';
+                localStorage.setItem('theme', 'light');
             } else {
                 themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+                localStorage.setItem('theme', 'dark');
             }
         });
 
